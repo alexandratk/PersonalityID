@@ -12,6 +12,7 @@ namespace PersonalityIdentification.DataContext
             MovingEmployees = new List<MovingEmployee>();
         }
         public int Id { get; set; }
+        public string Number { get; set; }
         public EducationalInstitution EducationalInstitution { get; set; }
         public IList<MovingPupil> MovingPupils { get; set; }
         public IList<MovingTeacher> MovingTeachers { get; set; }

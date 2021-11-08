@@ -36,6 +36,16 @@ namespace PersonalitylID
             });
             services.AddScoped<IEducationalInstitutionService, EducationalInstitutionService>();
             services.AddScoped<IEmployeeService, EmployeeService>();
+            services.AddScoped<IAdministratorService, AdministratorService>();
+            services.AddScoped<IParentService, ParentService>();
+            services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<ITeacherService, TeacherService>();
+            services.AddScoped<IPupilService, PupilService>();
+            services.AddScoped<IPupilParentService, PupilParentService>();
+            services.AddScoped<IDeviceService, DeviceService>();
+            services.AddScoped<IMovingEmployeeService, MovingEmployeeService>();
+            services.AddScoped<IMovingPupilService, MovingPupilService>();
+            services.AddScoped<IMovingTeacherService, MovingTeacherService>();
             services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<MyDataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PersonalIdConString")));
         }

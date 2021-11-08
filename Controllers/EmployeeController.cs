@@ -29,7 +29,6 @@ namespace PersonalityIdentification.Controllers
         [HttpPost("addemployee")]
         public async Task<IActionResult> RegisterEmployee([FromBody] EmployeeDto employeeDto)
         {
-            Console.WriteLine(employeeDto.EducationalInstitutionId);
             EducationalInstitution timeEducationalInstitution = context.EducationalInstitution.Where(c => c.Id == employeeDto.EducationalInstitutionId).FirstOrDefault();
             Employee newEmployee = mapper.Map<Employee>(employeeDto);
             newEmployee.EducationalInstitution = timeEducationalInstitution;
