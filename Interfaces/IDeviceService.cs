@@ -6,5 +6,6 @@ namespace PersonalityIdentification.Itrefaces
     public interface IDeviceService
     {
          Task<Device> AddDevice(Device newDevice);
+         Task DeleteDevice(int deviceId);
     }
 }

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PersonalityIdentification.DataContext;
 using PersonalityIdentification.Itrefaces;
 
@@ -19,6 +20,19 @@ namespace PersonalityIdentification.Services
             await database.SaveChangesAsync();
 
             return newAdministrator;
+        }
+
+        public async Task DeleteAdministrator(int administratorId)
+        {
+            var deletingAdministratorDescription =
+             await database.Administrator.FirstOrDefaultAsync(p => p.Id == administratorId);
+
+            if (deletingAdministratorDescription is null)
+                throw new System.Exception("No proper place found");
+
+            database.Administrator.Remove(deletingAdministratorDescription);
+            await database.SaveChangesAsync();
+
         }
     }
 }

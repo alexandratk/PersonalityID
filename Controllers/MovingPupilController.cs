@@ -37,5 +37,16 @@ namespace PersonalityIdentification.Controllers
             newMovingPupil = await MovingPupilService.AddMovingPupil(newMovingPupil);
             return Ok(newMovingPupil);
         }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteMovingPupil(int id)
+        {
+            await MovingPupilService.DeleteMovingPupil(id);
+            return Ok(new
+            {
+               Response = "MovingPupil is deleted successfully"
+            });
+        }
     }
 }

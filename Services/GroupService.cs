@@ -47,5 +47,18 @@ namespace PersonalityIdentification.Services
 
             return currentGroup;
         }
+
+        public async Task DeleteGroup(int GroupId)
+        {
+            var deletingGroupDescription =
+             await database.Group.FirstOrDefaultAsync(p => p.Id == GroupId);
+
+            if (deletingGroupDescription is null)
+                throw new System.Exception("No proper group found");
+
+            database.Group.Remove(deletingGroupDescription);
+            await database.SaveChangesAsync();
+
+        }
     }
 }

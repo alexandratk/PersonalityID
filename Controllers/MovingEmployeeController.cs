@@ -37,5 +37,15 @@ namespace PersonalityIdentification.Controllers
             newMovingEmployee = await MovingEmployeeService.AddMovingEmployee(newMovingEmployee);
             return Ok(newMovingEmployee);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteMovingEmployee(int id)
+        {
+            await MovingEmployeeService.DeleteMovingEmployee(id);
+            return Ok(new
+            {
+               Response = "MovingEmployee is deleted successfully"
+            });
+        }
     }
 }

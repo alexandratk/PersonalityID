@@ -29,5 +29,15 @@ namespace PersonalityIdentification.Controllers
             newEducationalInstitution = await educationalInstitutionService.AddEducationalInstitution(newEducationalInstitution);
             return Ok(newEducationalInstitution);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEducationalInstitution(int id)
+        {
+            await educationalInstitutionService.DeleteEducationalInstitution(id);
+            return Ok(new
+            {
+               Response = "EducationalInstitution is deleted successfully"
+            });
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PersonalityIdentification.DataContext;
 using PersonalityIdentification.Itrefaces;
 
@@ -19,6 +20,19 @@ namespace PersonalityIdentification.Services
             await database.SaveChangesAsync();
 
             return newTeacher;
+        }
+
+        public async Task DeleteTeacher(int TeacherId)
+        {
+            var deletingTeacherDescription =
+             await database.Teacher.FirstOrDefaultAsync(p => p.Id == TeacherId);
+
+            if (deletingTeacherDescription is null)
+                throw new System.Exception("No proper Parent found");
+
+            database.Teacher.Remove(deletingTeacherDescription);
+            await database.SaveChangesAsync();
+
         }
     }
 }

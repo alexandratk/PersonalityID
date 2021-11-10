@@ -6,5 +6,6 @@ namespace PersonalityIdentification.Itrefaces
     public interface IAdministratorService
     {
          Task<Administrator> AddAdministrator(Administrator newAdministrator);
+          Task DeleteAdministrator(int administratorId);
     }
 }

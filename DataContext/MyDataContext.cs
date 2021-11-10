@@ -41,6 +41,12 @@ namespace PersonalityIdentification.DataContext
             modelBuilder.Entity<Pupil>().HasMany(t => t.PupilParents).WithOne(p => p.Pupil);
             modelBuilder.Entity<Parent>().HasMany(t => t.PupilParents).WithOne(p => p.Parent);
             modelBuilder.Entity<Group>().HasMany(t => t.Pupils).WithMany(p => p.Groups);
+
+            modelBuilder.Entity<Teacher>().Property(r => r.Role).HasDefaultValue("Teacher");
+            modelBuilder.Entity<Pupil>().Property(r => r.Role).HasDefaultValue("Pupil");
+            modelBuilder.Entity<Parent>().Property(r => r.Role).HasDefaultValue("Parent");
+            modelBuilder.Entity<Employee>().Property(r => r.Role).HasDefaultValue("Employee");
+            modelBuilder.Entity<Administrator>().Property(r => r.Role).HasDefaultValue("Administrator");
         }
     }
 }

@@ -6,6 +6,7 @@ using PersonalityIdentification.Dtos;
 using PersonalityIdentification.Itrefaces;
 using System.Linq;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PersonalityIdentification.Controllers
 {
@@ -26,6 +27,7 @@ namespace PersonalityIdentification.Controllers
              this.mapper = mapper;
          }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost("addemployee")]
         public async Task<IActionResult> RegisterEmployee([FromBody] EmployeeDto employeeDto)
         {
@@ -34,6 +36,16 @@ namespace PersonalityIdentification.Controllers
             newEmployee.EducationalInstitution = timeEducationalInstitution;
             newEmployee = await EmployeeService.AddEmployee(newEmployee);
             return Ok(newEmployee);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEmployee(int id)
+        {
+            await EmployeeService.DeleteEmployee(id);
+            return Ok(new
+            {
+               Response = "Employee is deleted successfully"
+            });
         }
     }
 }

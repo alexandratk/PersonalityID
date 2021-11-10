@@ -6,5 +6,6 @@ namespace PersonalityIdentification.Itrefaces
     public interface IMovingEmployeeService
     {
          Task<MovingEmployee> AddMovingEmployee(MovingEmployee newMovingEmployee);
+         Task DeleteMovingEmployee(int movingEmployeeId);
     }
 }

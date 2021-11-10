@@ -37,5 +37,15 @@ namespace PersonalityIdentification.Controllers
             newMovingTeacher = await MovingTeacherService.AddMovingTeacher(newMovingTeacher);
             return Ok(newMovingTeacher);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteMovingTeacher(int id)
+        {
+            await MovingTeacherService.DeleteMovingTeacher(id);
+            return Ok(new
+            {
+               Response = "MovingTeacher is deleted successfully"
+            });
+        }
     }
 }

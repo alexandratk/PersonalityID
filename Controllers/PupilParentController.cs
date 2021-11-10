@@ -37,5 +37,15 @@ namespace PersonalityIdentification.Controllers
             newPupilParent = await PupilParentService.AddPupilParent(newPupilParent);
             return Ok(newPupilParent);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePupilParent(int id)
+        {
+            await PupilParentService.DeletePupilParent(id);
+            return Ok(new
+            {
+               Response = "PupilParent is deleted successfully"
+            });
+        }
     }
 }

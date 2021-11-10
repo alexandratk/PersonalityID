@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PersonalityIdentification.DataContext;
 using PersonalityIdentification.Itrefaces;
 
@@ -19,6 +20,19 @@ namespace PersonalityIdentification.Services
             await database.SaveChangesAsync();
 
             return newMovingEmployee;
+        }
+
+        public async Task DeleteMovingEmployee(int MovingEmployeeId)
+        {
+            var deletingMovingEmployeeDescription =
+             await database.MovingEmployee.FirstOrDefaultAsync(p => p.Id == MovingEmployeeId);
+
+            if (deletingMovingEmployeeDescription is null)
+                throw new System.Exception("No proper MovingEmployee found");
+
+            database.MovingEmployee.Remove(deletingMovingEmployeeDescription);
+            await database.SaveChangesAsync();
+
         }
     }
 }

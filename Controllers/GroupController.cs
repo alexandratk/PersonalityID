@@ -42,5 +42,15 @@ namespace PersonalityIdentification.Controllers
             Group currentGroup = await groupService.AddPupilToGroup(groupPupilDto);
             return Ok(currentGroup);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteGroup(int id)
+        {
+            await groupService.DeleteGroup(id);
+            return Ok(new
+            {
+               Response = "Group is deleted successfully"
+            });
+        }
     }
 }

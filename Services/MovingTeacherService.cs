@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PersonalityIdentification.DataContext;
 using PersonalityIdentification.Itrefaces;
 
@@ -19,6 +20,19 @@ namespace PersonalityIdentification.Services
             await database.SaveChangesAsync();
 
             return newMovingTeacher;
+        }
+
+        public async Task DeleteMovingTeacher(int MovingTeacherId)
+        {
+            var deletingMovingTeacherDescription =
+             await database.MovingTeacher.FirstOrDefaultAsync(p => p.Id == MovingTeacherId);
+
+            if (deletingMovingTeacherDescription is null)
+                throw new System.Exception("No proper MovingTeacher found");
+
+            database.MovingTeacher.Remove(deletingMovingTeacherDescription);
+            await database.SaveChangesAsync();
+
         }
     }
 }

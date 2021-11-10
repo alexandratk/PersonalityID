@@ -6,5 +6,6 @@ namespace PersonalityIdentification.Itrefaces
     public interface IMovingTeacherService
     {
          Task<MovingTeacher> AddMovingTeacher(MovingTeacher newMovingTeacher);
+         Task DeleteMovingTeacher(int movingTeacherId);
     }
 }

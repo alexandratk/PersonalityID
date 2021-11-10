@@ -8,5 +8,6 @@ namespace PersonalityIdentification.Itrefaces
     {
          Task<Group> AddGroup(Group newGroup);
          Task<Group> AddPupilToGroup(GroupPupilDto newUser);
+         Task DeleteGroup(int groupId);
     }
 }

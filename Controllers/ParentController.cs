@@ -6,6 +6,7 @@ using PersonalityIdentification.Dtos;
 using PersonalityIdentification.Itrefaces;
 using System.Linq;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PersonalityIdentification.Controllers
 {
@@ -26,12 +27,23 @@ namespace PersonalityIdentification.Controllers
              this.mapper = mapper;
          }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost("addparent")]
         public async Task<IActionResult> RegisterParent([FromBody] ParentDto parentDto)
         {
             Parent newParent = mapper.Map<Parent>(parentDto);
             newParent = await ParentService.AddParent(newParent);
             return Ok(newParent);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteParent(int id)
+        {
+            await ParentService.DeleteParent(id);
+            return Ok(new
+            {
+               Response = "Parent is deleted successfully"
+            });
         }
     }
 }

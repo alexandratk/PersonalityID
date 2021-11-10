@@ -15,14 +15,14 @@ namespace PersonalityIdentification.Controllers
     [Route("[controller]")]
     public class DeviceController: ControllerBase 
     {
-        private readonly IDeviceService DeviceService;
+        private readonly IDeviceService deviceService;
         private readonly IMapper mapper;
         private readonly MyDataContext context;
 
-        public DeviceController(MyDataContext context, IDeviceService DeviceService,
+        public DeviceController(MyDataContext context, IDeviceService deviceService,
          IMapper mapper) {
              this.context = context;
-             this.DeviceService = DeviceService;
+             this.deviceService = deviceService;
              this.mapper = mapper;
          }
 
@@ -32,8 +32,18 @@ namespace PersonalityIdentification.Controllers
             EducationalInstitution timeEducationalInstitution = context.EducationalInstitution.Where(c => c.Id == deviceDto.EducationalInstitutionId).FirstOrDefault();
             Device newDevice = mapper.Map<Device>(deviceDto);
             newDevice.EducationalInstitution = timeEducationalInstitution;
-            newDevice = await DeviceService.AddDevice(newDevice);
+            newDevice = await deviceService.AddDevice(newDevice);
             return Ok(newDevice);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteDevice(int id)
+        {
+            await deviceService.DeleteDevice(id);
+            return Ok(new
+            {
+               Response = "Device is deleted successfully"
+            });
         }
     }
 }
