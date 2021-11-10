@@ -8,7 +8,7 @@ namespace PersonalityIdentification.Profiles
     {
         public TeacherProfile()
         {
-            CreateMap<TeacherDto, Teacher>();
+            CreateMap<TeacherDto, Teacher>().ForMember(dto => dto.Id, memberOptions => memberOptions.Ignore());
         }
     }
 }

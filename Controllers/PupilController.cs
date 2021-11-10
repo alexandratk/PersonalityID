@@ -31,8 +31,7 @@ namespace PersonalityIdentification.Controllers
         [HttpPost("addpupil")]
         public async Task<IActionResult> RegisterPupil([FromBody] PupilDto pupilDto)
         {
-            Pupil newPupil = mapper.Map<Pupil>(pupilDto);
-            newPupil = await PupilService.AddPupil(newPupil);
+            var newPupil = await PupilService.AddPupil(pupilDto);
             return Ok(newPupil);
         }
 

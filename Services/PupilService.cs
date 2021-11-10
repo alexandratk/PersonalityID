@@ -1,24 +1,30 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using PersonalityID.Interfaces;
 using PersonalityIdentification.DataContext;
+using PersonalityIdentification.Dtos;
 using PersonalityIdentification.Itrefaces;
 
 namespace PersonalityIdentification.Services
 {
-    public class PupilService: IPupilService
+    public class PupilService : IPupilService
     {
         private readonly MyDataContext database;
+        private readonly IAuthHelper<Pupil, PupilDto> authHelper;
+        private readonly IUpdateHelper updateHelper;
 
-        public PupilService(MyDataContext database)
+        public PupilService(MyDataContext database, 
+                            IAuthHelper<Pupil, PupilDto> authHelper,
+                            IUpdateHelper updateHelper)
         {
             this.database = database;
+            this.authHelper = authHelper;
+            this.updateHelper = updateHelper;
         }
 
-        public async Task<Pupil> AddPupil(Pupil newPupil)
+        public async Task<Pupil> AddPupil(PupilDto newPupilDto)
         {
-            await database.Pupil.AddAsync(newPupil);
-            await database.SaveChangesAsync();
-
+            var newPupil = await authHelper.AddUserToDB(newPupilDto);
             return newPupil;
         }
 
@@ -33,6 +39,12 @@ namespace PersonalityIdentification.Services
             database.Pupil.Remove(deletingPupilDescription);
             await database.SaveChangesAsync();
 
+        }
+
+        public async Task<Pupil> UpdatePupil(PupilDto newPupilDto, int pupilId)
+        {
+            var updatedPupil = await updateHelper.updateEntity<Pupil, PupilDto>(newPupilDto, pupilId);
+            return updatedPupil;
         }
     }
 }

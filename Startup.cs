@@ -16,6 +16,10 @@ using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using PersonalityIdentification.Helpers;
+using PersonalityID.Services;
+using PersonalityID.Interfaces;
+using PersonalityIdentification.Dtos;
+using PersonalityID.Helpers;
 
 namespace PersonalitylID
 {
@@ -27,23 +31,23 @@ namespace PersonalitylID
             var optionsBuilder = new DbContextOptionsBuilder<MyDataContext>();
             optionsBuilder.UseSqlServer(Configuration.GetConnectionString("PersonalIdConString"));
 
-            // using (MyDataContext dbContext
-            //             = new MyDataContext(optionsBuilder.Options))
-            // {
-            //     var authAdministrator = dbContext.Administrator.FirstOrDefault(t => t.Role != null);
-            //     if (authAdministrator == null)
-            //     {
-            //         var administrator = new Administrator()
-            //         {
-            //             Login = "abcd",
-            //             Name = "admin",
-            //             Password = "1234",
-            //             Role = "Administrator"
-            //         };
-            //         dbContext.Add(administrator);
-            //         dbContext.SaveChanges();
-            //     }
-            // }
+            using (MyDataContext dbContext
+                        = new MyDataContext(optionsBuilder.Options))
+            {
+                var authAdministrator = dbContext.Administrator.FirstOrDefault(t => t.Role != null);
+                if (authAdministrator == null)
+                {
+                    var administrator = new Administrator()
+                    {
+                        Login = "abcd",
+                        Name = "admin",
+                        Password = HashHelper.ComputeSha256Hash("1234"),
+                        Role = "Administrator"
+                    };
+                    dbContext.Add(administrator);
+                    dbContext.SaveChanges();
+                }
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -73,7 +77,7 @@ namespace PersonalitylID
                             // установка потребителя токена
                             ValidAudience = AuthOptions.AUDIENCE,
                             // будет ли валидироваться время существования
-                            ValidateLifetime = true,
+                            ValidateLifetime = false,
 
                             // установка ключа безопасности
                             IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
@@ -94,6 +98,15 @@ namespace PersonalitylID
             services.AddScoped<IMovingPupilService, MovingPupilService>();
             services.AddScoped<IMovingTeacherService, MovingTeacherService>();
             services.AddScoped<IAuthService, AuthService>();
+
+            services.AddScoped<IAuthHelper<Teacher, TeacherDto>, AuthHelper<Teacher, TeacherDto>>();
+            services.AddScoped<IAuthHelper<Administrator, AdministratorDto>, AuthHelper<Administrator, AdministratorDto>>();
+            services.AddScoped<IAuthHelper<Parent, ParentDto>, AuthHelper<Parent, ParentDto>>();
+            services.AddScoped<IAuthHelper<Pupil, PupilDto>, AuthHelper<Pupil, PupilDto>>();
+            services.AddScoped<IAuthHelper<Employee, EmployeeDto>, AuthHelper<Employee, EmployeeDto>>();
+
+            services.AddScoped<IUpdateHelper, UpdateHelper>();
+
             services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<MyDataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("PersonalIdConString")));
         }
@@ -106,7 +119,7 @@ namespace PersonalitylID
                 app.UseDeveloperExceptionPage();
             }
 
-          //  app.UseHttpsRedirection();
+            //  app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

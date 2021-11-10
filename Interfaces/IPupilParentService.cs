@@ -5,7 +5,7 @@ namespace PersonalityIdentification.Itrefaces
 {
     public interface IPupilParentService
     {
-         Task<PupilParent> AddPupilParent(PupilParent newPupilParent);
-         Task DeletePupilParent(int pupilParentId);
+        Task<PupilParent> AddPupilParent(PupilParent newPupilParent);
+        Task DeletePupilParent(int pupilParentId);
     }
 }

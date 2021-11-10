@@ -1,16 +1,20 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using PersonalityID.Interfaces;
 using PersonalityIdentification.DataContext;
+using PersonalityIdentification.Dtos;
 using PersonalityIdentification.Itrefaces;
 
 namespace PersonalityIdentification.Services
 {
-    public class EducationalInstitutionService: IEducationalInstitutionService
+    public class EducationalInstitutionService : IEducationalInstitutionService
     {
         private readonly MyDataContext database;
+        private readonly IUpdateHelper updateHelper;
 
-        public EducationalInstitutionService(MyDataContext database)
+        public EducationalInstitutionService(MyDataContext database, IUpdateHelper updateHelper)
         {
+            this.updateHelper = updateHelper;
             this.database = database;
         }
 
@@ -33,6 +37,12 @@ namespace PersonalityIdentification.Services
             database.EducationalInstitution.Remove(deletingEducationalInstitutionDescription);
             await database.SaveChangesAsync();
 
+        }
+
+        public async Task<EducationalInstitution> UpdateEducationalInstitution(EducationalInstitutionDto newEducationalInstitution, int eduId)
+        {
+            var updatedEduInst = await updateHelper.updateEntity<EducationalInstitution, EducationalInstitutionDto>(newEducationalInstitution, eduId);
+            return updatedEduInst;
         }
     }
 }

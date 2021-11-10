@@ -1,16 +1,20 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using PersonalityID.Interfaces;
 using PersonalityIdentification.DataContext;
+using PersonalityIdentification.Dtos;
 using PersonalityIdentification.Itrefaces;
 
 namespace PersonalityIdentification.Services
 {
-    public class DeviceService: IDeviceService
+    public class DeviceService : IDeviceService
     {
         private readonly MyDataContext database;
+        private readonly IUpdateHelper updateHelper;
 
-        public DeviceService(MyDataContext database)
+        public DeviceService(MyDataContext database, IUpdateHelper updateHelper)
         {
+            this.updateHelper = updateHelper;
             this.database = database;
         }
 
@@ -33,6 +37,12 @@ namespace PersonalityIdentification.Services
             database.Device.Remove(deletingDeviceDescription);
             await database.SaveChangesAsync();
 
+        }
+
+        public async Task<Device> UpdateDevice(DeviceDto deviceDto, int deviceId)
+        {
+            var updatedAdministrator = await updateHelper.updateEntity<Device, DeviceDto>(deviceDto, deviceId);
+            return updatedAdministrator;
         }
     }
 }

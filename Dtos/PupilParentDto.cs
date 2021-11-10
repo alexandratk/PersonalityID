@@ -1,8 +1,9 @@
+using PersonalityID.Dtos;
 using PersonalityIdentification.DataContext;
 using System;
 namespace PersonalityIdentification.Dtos
 {
-    public class PupilParentDto
+    public class PupilParentDto: UserRegisterDto
     {
         public string Relationship { get; set; }
         public int ParentId { get; set; }

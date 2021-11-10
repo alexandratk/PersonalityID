@@ -16,14 +16,14 @@ namespace PersonalityIdentification.Controllers
     [Route("[controller]")]
     public class TeacherController: ControllerBase 
     {
-        private readonly ITeacherService TeacherService;
+        private readonly ITeacherService teacherService;
         private readonly IMapper mapper;
         private readonly MyDataContext context;
 
-        public TeacherController(MyDataContext context, ITeacherService TeacherService,
+        public TeacherController(MyDataContext context, ITeacherService teacherService,
          IMapper mapper) {
              this.context = context;
-             this.TeacherService = TeacherService;
+             this.teacherService = teacherService;
              this.mapper = mapper;
          }
 
@@ -31,17 +31,14 @@ namespace PersonalityIdentification.Controllers
         [HttpPost("addteacher")]
         public async Task<IActionResult> RegisterTeacher([FromBody] TeacherDto teacherDto)
         {
-            EducationalInstitution timeEducationalInstitution = context.EducationalInstitution.Where(c => c.Id == teacherDto.EducationalInstitutionId).FirstOrDefault();
-            Teacher newTeacher = mapper.Map<Teacher>(teacherDto);
-            newTeacher.EducationalInstitution = timeEducationalInstitution;
-            newTeacher = await TeacherService.AddTeacher(newTeacher);
+            var newTeacher = await teacherService.AddTeacher(teacherDto);
             return Ok(newTeacher);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTeacher(int id)
         {
-            await TeacherService.DeleteTeacher(id);
+            await teacherService.DeleteTeacher(id);
             return Ok(new
             {
                Response = "Teacher is deleted successfully"

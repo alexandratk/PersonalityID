@@ -14,27 +14,25 @@ namespace PersonalityIdentification.Controllers
 
     [ApiController]
     [Route("[controller]")]
-    public class AdministratorController: ControllerBase 
+    public class AdministratorController : ControllerBase
     {
         private readonly IAdministratorService administratorService;
         private readonly IMapper mapper;
         private readonly MyDataContext context;
 
         public AdministratorController(MyDataContext context, IAdministratorService administratorService,
-         IMapper mapper) {
-             this.context = context;
-             this.administratorService = administratorService;
-             this.mapper = mapper;
-         }
+         IMapper mapper)
+        {
+            this.context = context;
+            this.administratorService = administratorService;
+            this.mapper = mapper;
+        }
 
         [Authorize(Roles = "Administrator")]
         [HttpPost("addadmin")]
         public async Task<IActionResult> RegisterAdministrator([FromBody] AdministratorDto administratorDto)
         {
-            EducationalInstitution timeEducationalInstitution = context.EducationalInstitution.Where(c => c.Id == administratorDto.EducationalInstitutionId).FirstOrDefault();
-            Administrator newAdministrator = mapper.Map<Administrator>(administratorDto);
-            newAdministrator.EducationalInstitution = timeEducationalInstitution;
-            newAdministrator = await administratorService.AddAdministrator(newAdministrator);
+            var newAdministrator = await administratorService.AddAdministrator(administratorDto);
             return Ok(newAdministrator);
         }
 

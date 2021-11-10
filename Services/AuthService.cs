@@ -10,6 +10,9 @@ using PersonalityIdentification.Dtos;
 using PersonalityIdentification.Itrefaces;
 using Microsoft.IdentityModel.Tokens;
 using PersonalityIdentification.Helpers;
+using System.Security.Cryptography;
+using System.Text;
+using PersonalityID.Helpers;
 
 namespace PersonalityIdentification.Services
 {
@@ -46,8 +49,10 @@ namespace PersonalityIdentification.Services
 
         public async Task<User> GetUserByPassAndMail(IQueryable<User> placeToSerach, AuthRequestModel authRequestModel)
         {
-            return await placeToSerach.FirstOrDefaultAsync(p => p.Login == authRequestModel.Login && p.Password == authRequestModel.Password);
+            return await placeToSerach.FirstOrDefaultAsync(p => p.Login == authRequestModel.Login && p.Password == HashHelper.ComputeSha256Hash(authRequestModel.Password));
         }
+
+       
 
         string generateJWTToken(User person)
         {

@@ -31,8 +31,7 @@ namespace PersonalityIdentification.Controllers
         [HttpPost("addparent")]
         public async Task<IActionResult> RegisterParent([FromBody] ParentDto parentDto)
         {
-            Parent newParent = mapper.Map<Parent>(parentDto);
-            newParent = await ParentService.AddParent(newParent);
+            var newParent = await ParentService.AddParent(parentDto);
             return Ok(newParent);
         }
 

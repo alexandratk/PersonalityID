@@ -8,7 +8,7 @@ namespace PersonalityIdentification.Profiles
     {
         public AdministratorProfile()
         {
-            CreateMap<AdministratorDto, Administrator>();
+            CreateMap<AdministratorDto, Administrator>().ForMember(dto => dto.Id, memberOptions => memberOptions.Ignore());
         }
     }
 }

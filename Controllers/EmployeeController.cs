@@ -31,10 +31,7 @@ namespace PersonalityIdentification.Controllers
         [HttpPost("addemployee")]
         public async Task<IActionResult> RegisterEmployee([FromBody] EmployeeDto employeeDto)
         {
-            EducationalInstitution timeEducationalInstitution = context.EducationalInstitution.Where(c => c.Id == employeeDto.EducationalInstitutionId).FirstOrDefault();
-            Employee newEmployee = mapper.Map<Employee>(employeeDto);
-            newEmployee.EducationalInstitution = timeEducationalInstitution;
-            newEmployee = await EmployeeService.AddEmployee(newEmployee);
+            var newEmployee = await EmployeeService.AddEmployee(employeeDto);
             return Ok(newEmployee);
         }
 

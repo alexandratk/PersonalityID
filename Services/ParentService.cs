@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using PersonalityID.Interfaces;
 using PersonalityIdentification.DataContext;
+using PersonalityIdentification.Dtos;
 using PersonalityIdentification.Itrefaces;
 
 namespace PersonalityIdentification.Services
@@ -8,17 +10,21 @@ namespace PersonalityIdentification.Services
     public class ParentService: IParentService
     {
         private readonly MyDataContext database;
+        private readonly IAuthHelper<Parent, ParentDto> authHelper;
+        private readonly IUpdateHelper updateHelper;
 
-        public ParentService(MyDataContext database)
+        public ParentService(MyDataContext database, 
+                            IAuthHelper<Parent, ParentDto> authHelper,
+                            IUpdateHelper updateHelper)
         {
             this.database = database;
+            this.authHelper = authHelper;
+            this.updateHelper = updateHelper;
         }
 
-        public async Task<Parent> AddParent(Parent newParent)
+        public async Task<Parent> AddParent(ParentDto newParentDto)
         {
-            await database.Parent.AddAsync(newParent);
-            await database.SaveChangesAsync();
-
+            var newParent = await authHelper.AddUserToDB(newParentDto);
             return newParent;
         }
 
@@ -33,6 +39,12 @@ namespace PersonalityIdentification.Services
             database.Parent.Remove(deletingParentDescription);
             await database.SaveChangesAsync();
 
+        }
+
+        public async Task<Parent> UpdateParent(ParentDto newParentDto, int parentId)
+        {
+            var updatedParent = await updateHelper.updateEntity<Parent, ParentDto>(newParentDto, parentId);
+            return updatedParent;
         }
     }
 }
